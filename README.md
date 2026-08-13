@@ -38,13 +38,29 @@ jupyter notebook train.ipynb
 make gguf
 
 # Run local inference
-./llama.cpp/llama-gguf-cli -m output/gpt-oss-sap-cleaner-q8_0.gguf
+make demo   # or directly:
+# uv run inference_demo.py --gguf output/gpt-oss-sap-cleaner-q8_0.gguf --sample 0
 ```
+
+## Repository layout
+
+```
+convention_spec.py        Deterministic "teacher" normalisation rules (stdlib only)
+scripts/gen_data.py       Synthetic messy->clean JSONL generation (make data)
+data/train|valid|test.jsonl  800 generated samples (640/80/80)
+train.ipynb               Unsloth LoRA fine-tuning notebook (Colab T4)
+inference_demo.py         Local GGUF inference demo
+projects/                 Implementation roadmap (MOC)
+```
+
+See [`projects/gpt-oss-20b-finetune-roadmap.md`](projects/gpt-oss-20b-finetune-roadmap.md)
+for the step-by-step implementation status.
 
 ## Models
 
 - **Base**: [GPT-OSS-20B](https://huggingface.co/unsloth/gpt-oss-20b)
-- **LoRA adapter**: `qwen3-0.6b-cleaner`
+- **LoRA adapter**: `gpt-oss-sap-cleaner`
+- **GGUF (local)**: `output/gpt-oss-sap-cleaner-q8_0.gguf` (~600 MB)
 
 ## Legal
 

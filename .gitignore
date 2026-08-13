@@ -87,6 +87,7 @@ htmlcov/
 amazonq/
 .amazonq/
 *.codestory
+.openhands-agent
 
 # ============================================================================
 # LLM model artifacts & generated training/inference outputs
@@ -118,17 +119,18 @@ datasets/__pycache__/
 hf_cache/
 
 # ============================================================================
-# Data files (raw & generated) — keep source raw data out of version control
+# Data files — keep raw/source data out of version control
+# NOTE: generated JSONL training splits (data/train|valid|test.jsonl) ARE
+#       meant to be committed, so they are NOT ignored here.
 # ============================================================================
-data/
 *.csv
 *.xlsx
 *.xls
 *.parquet
-*.jsonl
 *.db
 *.sqlite
 *.sqlite3
+!data/*.jsonl
 
 # ============================================================================
 # Jupyter / notebooks

@@ -1,0 +1,26 @@
+# ============================================================================
+# gpt-oss-sap-cleaner Python dependencies
+# ----------------------------------------------------------------------------
+# Training runs on Google Colab (free T4). Install with uv:
+#     uv pip install -r requirements.txt
+# NOTE: For GPU training on Linux/Colab, `unsloth` pulls in its own torch build.
+#       The inference_demo.py path only needs llama-cpp-python.
+# ============================================================================
+
+# --- Core ML / HF stack (Colab training) ---
+unsloth>=2025.3
+unsloth-zoo>=2025.3
+torch>=2.5
+transformers==4.56.2
+trl==0.22.2
+peft>=0.14
+accelerate>=1.2
+datasets>=3.2
+bitsandbytes>=0.45
+
+# --- Local GGUF inference ---
+llama-cpp-python>=0.3.0
+
+# --- Notebook / misc ---
+jupyter>=1.1
+sentencepiece>=0.2.0
