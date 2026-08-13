@@ -66,28 +66,133 @@ htmlcov/
 # ============================================================================
 .claude/
 .claude.json
+.claude-data/
+*.claude.settings.local.json
+.claude/settings.local.json
+
+# --- OpenHands (formerly OpenDevin) ---
+.openhands/
+.openhands-agent
+.openhands-state/
+.opendevin/
+.opendevin.yml
+.workspace/
+
+# --- OpenAI Codex / GPT ---
+.codex/
+.codex.md
+.codexlint/
+.codex/prompt_log
+.gpt/
+.tiktoken-cache/
+.code_history.jsonl
+
+# --- Cursor ---
 .cursor/
 .cursorrules
 .cursorignore
-.codex/
-.aider*
-.windsurf/
-.continue/
+.cursor-tools/
+.cursorlogs/
+.vscode-settings.cursor.json
+
+# --- GitHub Copilot ---
 .copilot/
 .github/copilot-instructions.md
+.copilot-settings.json
+.copilotchat/
+.git-copilot/
+
+# --- Google Gemini / Jules / Antigravity ---
 .gemini/
 .gemini.log
-.kagi/
-.mentat/
-.pieces-cache/
-.tcr/
+.jules/
+.julesignore
+.antigravity/
+.antigravity.json
+.codespace-asks/
+.askgemini/
+
+# --- JetBrains AI ---
+.idea/aiAssistant/
+aiAssistant.properties
+.jibber/
+.betterai/
+.idea/.generated/
+
+# --- Sourcegraph Cody ---
+.cody/
+.cody.json
+.codyignore
+
+# --- Aider ---
+.aider*
+.aider/
+.aider.out.txt
+.aider.input.history
+.aider.history.md
+
+# --- Amazon Q / CodeWhisperer ---
+.amazonq/
+amazonq/
+.config/amazonq/
+.aws/codewhisperer/
+.codewhisperer/
+
+# --- Windsurf / Codeium ---
+.windsurf/
+.windsurfrules
+.codeium/
+.wavelog
+
+# --- Continue ---
+.continue/
+.continue/config.yaml
+
+# --- Cline / RooCode / OpenCode ---
+.cline/
+.clinerules
+.clineignore
+.roo/
+.rooignore
+.cuka/
+.open-code/
+.opencode/
+
+# --- Other assistants, agents & AI tools ---
 .rules
 .training
 .venv-agent/
-amazonq/
-.amazonq/
 *.codestory
-.openhands-agent
+.mentat/
+.tabby/
+.tabbyml/
+.tabnine/
+.pieces-cache/
+.tcr/
+.mintlify/
+.codely/
+.kagi/
+.gpt-pilot/
+.auto-coder/
+.smart-commits/
+.curo/
+.askcode/
+.gpt-runner/
+.cemu/
+.minion/
+.codebuddy/
+.copilot-plus/
+.supermaven/
+.agent-cache/
+.agents/
+.agent-logs/
+.auto-agents/
+audits.txt
+*.agent.json
+.aevy/
+.aevy-history*
+.sigmind/
+.swifty/
 
 # ============================================================================
 # LLM model artifacts & generated training/inference outputs
