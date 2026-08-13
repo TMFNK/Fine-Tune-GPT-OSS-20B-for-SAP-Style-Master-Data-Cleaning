@@ -54,6 +54,7 @@ from typing import Any, Dict, List, Tuple
 #: Canonical output fields produced by this module.
 FIELDS: Dict[str, str] = {
     "name1": "trimmed & title-cased",
+    "city": "trimmed & title-cased",
     "legalForm": "GmbH / AG / GbR / OHG / UG / e.K.",
     "country": "ISO-3166-1 alpha-2 (DE / AT / CH / ...)",
     "iban": "uppercased, no spaces (DE...22)",
@@ -110,6 +111,13 @@ _DATE_FORMATS: List[Tuple[str, str]] = [
 # Field normalisers  (return (clean_value, changed: bool))
 # ---------------------------------------------------------------------------
 def _norm_name1(value: Any) -> Tuple[str, bool]:
+    text = str(value).strip()
+    collapsed = re.sub(r"\s+", " ", text)
+    cleaned = collapsed.title()
+    return cleaned, cleaned != text
+
+
+def _norm_city(value: Any) -> Tuple[str, bool]:
     text = str(value).strip()
     collapsed = re.sub(r"\s+", " ", text)
     cleaned = collapsed.title()
@@ -187,6 +195,7 @@ def _norm_amount(value: Any) -> Tuple[Any, bool]:
 
 _NORMALIZERS: Dict[str, Any] = {
     "name1": _norm_name1,
+    "city": _norm_city,
     "legalForm": _norm_legal_form,
     "country": _norm_country,
     "iban": _norm_iban,
@@ -264,6 +273,7 @@ def _run_self_tests() -> None:
             print(f"  [FAIL] {desc}: got {got!r}, expected {expected!r}")
 
     check("name1 trim+title", _norm_name1("  muster handels  ")[0], "Muster Handels")
+    check("city trim+title", _norm_city("  hamburg  ")[0], "Hamburg")
     check("legalForm mbH", _norm_legal_form("mbH")[0], "GmbH")
     check("legalForm gbr", _norm_legal_form("gbr")[0], "GbR")
     check("country Germany", _norm_country("Germany")[0], "DE")

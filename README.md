@@ -62,10 +62,21 @@ for the step-by-step implementation status.
 - **LoRA adapter**: `gpt-oss-sap-cleaner`
 - **GGUF (local)**: `output/gpt-oss-sap-cleaner-q8_0.gguf` (~600 MB)
 
-## Legal
+## Bringing your own messy data
 
-MIT (see LICENSE file)
+The synthetic `data/*.jsonl` splits are for training and CI. In practice you
+clean **your own messy SAP records**: dump them as JSON lines and run them through
+
+```bash
+uv run inference_demo.py --gguf output/gpt-oss-sap-cleaner-q8_0.gguf \
+    --input '{"name1":" muster handels ","country":"Germany","amount":"1.234,56"}'
+```
+
+or pipe a whole file through the `llama.cpp` server (`make serve`). The model
+also handles fields the deterministic `convention_spec` rules don't cover, so
+real-world records that the rules can't parse are where the fine-tuned model
+earns its keep.
 
 ## License
 
-MIT
+MIT (see LICENSE file)
