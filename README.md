@@ -44,7 +44,7 @@ make demo   # or directly:
 
 ## Repository layout
 
-```
+```tree
 convention_spec.py        Deterministic "teacher" normalisation rules (stdlib only)
 scripts/gen_data.py       Synthetic messy->clean JSONL generation (make data)
 data/train|valid|test.jsonl  800 generated samples (640/80/80)

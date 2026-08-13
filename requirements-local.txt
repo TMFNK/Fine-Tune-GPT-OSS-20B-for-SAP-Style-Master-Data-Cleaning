@@ -1,0 +1,4 @@
+# Local inference & tooling stack (CPU-only — installs fast on macOS).
+#   uv pip install -r requirements-local.txt
+llama-cpp-python>=0.3.0
+requests>=2.31

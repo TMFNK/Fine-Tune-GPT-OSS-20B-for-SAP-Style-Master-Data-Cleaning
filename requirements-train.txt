@@ -1,0 +1,13 @@
+# Training stack — install on Google Colab / any GPU box.
+#   uv pip install -r requirements-train.txt
+unsloth>=2025.3
+unsloth-zoo>=2025.3
+torch>=2.5
+transformers==4.56.2
+trl==0.22.2
+peft>=0.14
+accelerate>=1.2
+datasets>=3.2
+bitsandbytes>=0.45
+sentencepiece>=0.2.0
+jupyter>=1.1

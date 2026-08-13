@@ -14,6 +14,8 @@
 | `scripts/gen_data.py` (synthetic JSONL generation) | ✅ Done |
 | `train.ipynb` (Unsloth LoRA notebook) | ✅ Done |
 | `inference_demo.py` (GGUF local demo) | ✅ Done |
+| `scripts/eval.py` + `make eval` (baseline + model scoring) | ✅ Done |
+| CI (data determinism, self-tests, baseline eval) | ✅ Done |
 | Fuse + GGUF export (`make fuse` / `make gguf`) | ⏳ Pending training |
 | Live training run on Colab T4 | ⏳ Pending |
 

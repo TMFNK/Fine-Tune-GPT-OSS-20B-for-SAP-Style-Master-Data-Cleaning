@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Convention spec self-tests
+        run: uv run --python 3.12 python convention_spec.py
+
+      - name: Data generation is deterministic and correctly sized
+        run: |
+          uv run --python 3.12 python -m scripts.gen_data --out /tmp/g1 --seed 42
+          uv run --python 3.12 python -m scripts.gen_data --out /tmp/g2 --seed 42
+          diff -r /tmp/g1 /tmp/g2
+          test "$(wc -l < /tmp/g1/train.jsonl)" = "640"
+          test "$(wc -l < /tmp/g1/valid.jsonl)" = "80"
+          test "$(wc -l < /tmp/g1/test.jsonl)" = "80"
+
+      - name: Baseline evaluation runs
+        run: uv run --python 3.12 python -m scripts.eval --data data/test.jsonl --baseline
+
+      - name: Committed data is self-consistent (normalize(messy) == clean)
+        run: |
+          uv run --python 3.12 python - <<'PYEOF'
+          import json
+          from pathlib import Path
+          from convention_spec import normalize_record
+
+          bad = 0
+          for split in ("train", "valid", "test"):
+              for line in Path(f"data/{split}.jsonl").read_text().splitlines():
+                  row = json.loads(line)
+                  if normalize_record(row["messy"]) != row["clean"]:
+                      bad += 1
+          assert bad == 0, f"{bad} inconsistent samples"
+          print("all committed samples self-consistent")
+          PYEOF

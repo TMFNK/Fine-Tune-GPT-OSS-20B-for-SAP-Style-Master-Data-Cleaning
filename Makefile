@@ -16,8 +16,11 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-9s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install Python dependencies
+install: ## Install Python dependencies (full stack)
 	uv pip install -r requirements.txt
+
+local: ## Install only the local-inference stack (llama-cpp-python)
+	uv pip install -r requirements-local.txt
 
 data: ## Generate synthetic messy->clean JSONL splits (train/valid/test)
 	uv run python -m scripts.gen_data
@@ -25,9 +28,8 @@ data: ## Generate synthetic messy->clean JSONL splits (train/valid/test)
 train: ## Fine-tune GPT-OSS-20B (run inside train.ipynb on Colab T4)
 	@echo "Open train.ipynb in Jupyter and run all cells (max_steps=30, r=8)."
 
-eval: ## Score baseline vs fine-tuned model on held-out test set
-	@echo "TODO: implement evaluation harness (n/a until a GGUF is exported)."
-	@echo "Run: python -m scripts.eval --gguf $(GGUF_MODEL)"
+eval: ## Score the cleaner on the held-out test set (baseline by default)
+	uv run python -m scripts.eval --data data/test.jsonl --baseline
 
 fuse: ## Merge LoRA adapter into base model
 	@echo "TODO: merge LoRA checkpoint into base model (see train.ipynb)."
@@ -36,8 +38,8 @@ gguf: fuse ## Export GGUF from merged model
 	@echo "Converting to GGUF -> $(GGUF_MODEL)"
 	@echo "Run: unsloth.save_pretrained_gguf(...) or convert_hf_to_gguf.py"
 
-serve: ## Spin up llama.cpp OpenAI-compatible HTTP server
-	llama-gguf-cli --server -m $(GGUF_MODEL)
+serve: ## Spin up llama.cpp OpenAI-compatible HTTP server (llama-cpp-python)
+	python -m llama_cpp.server --model $(GGUF_MODEL) --n_gpu_layers 0
 
 demo: ## Run one clean record through the GGUF model
 	uv run inference_demo.py --gguf $(GGUF_MODEL)
