@@ -3,6 +3,7 @@
 #     uv pip install -r requirements.txt
 # For inference-only local use, install requirements-local.txt instead.
 # See requirements-train.txt (Colab/GPU) and requirements-local.txt (CPU).
+- llama-cpp-python==0.0.146  # Pinned for llama-gguf-cli compatibility
 # ============================================================================
 -r requirements-train.txt
 -r requirements-local.txt

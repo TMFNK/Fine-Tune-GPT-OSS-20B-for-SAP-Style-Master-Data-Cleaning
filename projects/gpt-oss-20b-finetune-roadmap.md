@@ -7,17 +7,17 @@
 
 ## Status
 
-| Step | Status |
-|------|--------|
-| Scaffold + `.gitignore` + `requirements.txt` + `Makefile` | ✅ Done |
-| `convention_spec.py` (deterministic teacher rules) | ✅ Done |
-| `scripts/gen_data.py` (synthetic JSONL generation) | ✅ Done |
-| `train.ipynb` (Unsloth LoRA notebook) | ✅ Done |
-| `inference_demo.py` (GGUF local demo) | ✅ Done |
-| `scripts/eval.py` + `make eval` (baseline + model scoring) | ✅ Done |
-| CI (data determinism, self-tests, baseline eval) | ✅ Done |
-| Fuse + GGUF export (`make fuse` / `make gguf`) | ⏳ Pending training |
-| Live training run on Colab T4 | ⏳ Pending |
+| Step                                                       | Status              |
+| ---------------------------------------------------------- | ------------------- |
+| Scaffold + `.gitignore` + `requirements.txt` + `Makefile`  | ✅ Done             |
+| `convention_spec.py` (deterministic teacher rules)         | ✅ Done             |
+| `scripts/gen_data.py` (synthetic JSONL generation)         | ✅ Done             |
+| `train.ipynb` (Unsloth LoRA notebook)                      | ✅ Done             |
+| `inference_demo.py` (GGUF local demo)                      | ✅ Done             |
+| `scripts/eval.py` + `make eval` (baseline + model scoring) | ✅ Done             |
+| CI (data determinism, self-tests, baseline eval)           | ✅ Done             |
+| Fuse + GGUF export (`make fuse` / `make gguf`)             | ⏳ Pending training |
+| Live training run on Colab T4                              | ⏳ Pending          |
 
 ---
 
@@ -44,16 +44,16 @@ gpt-oss-sap-cleaner/
 
 ## Makefile Targets
 
-| Target | Purpose |
-|--------|---------|
+| Target         | Purpose                                                                      |
+| -------------- | ---------------------------------------------------------------------------- |
 | `make install` | Install Python deps (`unsloth`, `transformers==4.56.2`, `trl==0.22.2`, etc.) |
-| `make data` | Generate synthetic messy↔clean JSONL pairs |
-| `make train` | Run fine-tuning in Jupyter notebook (`max_steps≈30`, `r=8`) |
-| `make eval` | Score baseline vs fine-tuned model on held-out test set |
-| `make fuse` | Merge LoRA adapter into base model |
-| `make gguf` | Export GGUF file (`[alias]-q8_0.gguf`, ~600MB) |
-| `make serve` | Spin up `llama.cpp` HTTP server |
-| `make demo` | Run one clean record through the model |
+| `make data`    | Generate synthetic messy↔clean JSONL pairs                                   |
+| `make train`   | Run fine-tuning in Jupyter notebook (`max_steps≈30`, `r=8`)                  |
+| `make eval`    | Score baseline vs fine-tuned model on held-out test set                      |
+| `make fuse`    | Merge LoRA adapter into base model                                           |
+| `make gguf`    | Export GGUF file (`[alias]-q8_0.gguf`, ~600MB)                               |
+| `make serve`   | Spin up `llama.cpp` HTTP server                                              |
+| `make demo`    | Run one clean record through the model                                       |
 
 ## Step 1 — Convention Specification (`convention_spec.py`)
 
@@ -126,10 +126,10 @@ Sample output shape:
 
 ## Estimated Timeline
 
-| Milestone | Time on free T4 |
-|-----------|-----------------|
-| Data generation | 5 min |
-| Training (30 steps, LoRA) | 15 min |
-| Fuse + GGUF export | 10 min |
-| Demo & verification | 5 min |
-| **Total** | ~35 min |
+| Milestone                 | Time on free T4 |
+| ------------------------- | --------------- |
+| Data generation           | 5 min           |
+| Training (30 steps, LoRA) | 15 min          |
+| Fuse + GGUF export        | 10 min          |
+| Demo & verification       | 5 min           |
+| **Total**                 | ~35 min         |
