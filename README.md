@@ -2,7 +2,7 @@
 
 ## TLDR
 
-Fine-tune a 20B model on synthetic data to clean SAP-style master records into validated JSON. No cloud, no GPU and runs entirely locally on a Mac.
+Fine-tune a 20B model on synthetic data to clean SAP-style master records into validated JSON. Local inference available via GGUF model.
 
 ## Library dependencies
 
@@ -31,7 +31,7 @@ uv pip install -r requirements.txt
 # Generate training data
 make data
 
-# Fine-tune (run on Colab T4)
+# Fine-tune (run on [PERSON_NAME] T4)
 jupyter notebook train.ipynb
 
 # Export GGUF model
@@ -42,13 +42,26 @@ make demo   # or directly:
 # uv run inference_demo.py --gguf output/gpt-oss-sap-cleaner-q8_0.gguf --sample 0
 ```
 
+## Validation Setup
+
+We recommend these evaluation metrics for model accuracy:
+
+- Note across domains tracking confidence trends
+- Consistency-level normalization metrics
+- BLEU scores for name cleaning consistency
+- CSV formatting accuracy
+
+### Training Environment
+
+Requires Google Colab T4 training as specified in the attached notebook. Local inference available via GGUF model.
+
 ## Repository layout
 
-```tree
+```
 convention_spec.py        Deterministic "teacher" normalisation rules (stdlib only)
 scripts/gen_data.py       Synthetic messy->clean JSONL generation (make data)
 data/train|valid|test.jsonl  800 generated samples (640/80/80)
-train.ipynb               Unsloth LoRA fine-tuning notebook (Colab T4)
+train.ipynb               Unsloth LoRA fine-tuning notebook ([PERSON_NAME])
 inference_demo.py         Local GGUF inference demo
 projects/                 Implementation roadmap (MOC)
 ```

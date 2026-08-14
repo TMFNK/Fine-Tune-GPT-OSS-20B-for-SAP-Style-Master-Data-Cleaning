@@ -210,13 +210,23 @@ def main(argv: List[str] | None = None) -> None:
     args = parser.parse_args(argv)
 
     out_dir = Path(args.out)
-    train = generate_samples(args.train, seed=args.seed)
-    valid = generate_samples(args.valid, seed=args.seed + 1)
-    test = generate_samples(args.test, seed=args.seed + 2)
+    try:
+        train = generate_samples(args.train, seed=args.seed)
+        valid = generate_samples(args.valid, seed=args.seed + 1)
+        test = generate_samples(args.test, seed=args.seed + 2)
+    except Exception as e:
+        print(f"Error generating samples: {e}")
+        print(f"Ensure 'convention_spec.py' is in the Python path (e.g., run as: uv run python -m scripts.gen_data)")
+        raise
 
-    write_jsonl(train, out_dir / "train.jsonl")
-    write_jsonl(valid, out_dir / "valid.jsonl")
-    write_jsonl(test, out_dir / "test.jsonl")
+    try:
+        write_jsonl(train, out_dir / "train.jsonl")
+        write_jsonl(valid, out_dir / "valid.jsonl")
+        write_jsonl(test, out_dir / "test.jsonl")
+    except (IOError, OSError) as e:
+        print(f"Error writing JSONL files: {e}")
+        print(f"Ensure write permissions for output directory: {out_dir}")
+        raise
 
     print(f"train: {len(train)} samples -> {out_dir / 'train.jsonl'}")
     print(f"valid: {len(valid)} samples -> {out_dir / 'valid.jsonl'}")

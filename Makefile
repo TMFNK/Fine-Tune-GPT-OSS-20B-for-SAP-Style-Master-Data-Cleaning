@@ -2,11 +2,11 @@
 # gpt-oss-sap-cleaner Makefile
 # ----------------------------------------------------------------------------
 # Convenience targets for the full pipeline. Most ML targets assume a
-# GPU environment (Colab). Data generation (make data) runs anywhere.
+# GPU environment (Colab T4). Data generation (make data) runs anywhere.
 # ============================================================================
-
+ 
 SHELL := /bin/bash
-.PHONY: help install data train eval fuse gguf serve demo
+.PHONY: help install data train eval fuse gguf serve demo clean
 
 PROJECT    := gpt-oss-sap-cleaner
 ALIAS      := gpt-oss-sap-cleaner
@@ -26,10 +26,24 @@ data: ## Generate synthetic messy->clean JSONL splits (train/valid/test)
 	uv run python -m scripts.gen_data
 
 train: ## Fine-tune GPT-OSS-20B (run inside train.ipynb on Colab T4)
-	@echo "Open train.ipynb in Jupyter and run all cells (max_steps=30, r=8)."
+	@echo "Open train.ipynb in Google Colab and run all cells (max_steps=30, r=8)."
 
 eval: ## Score the cleaner on the held-out test set (baseline by default)
-	uv run python -m scripts.eval --data data/test.jsonl --baseline
+	uv run python -c " \
+		import json; \
+		from pathlib import Path; \
+		import sys; \
+		baseline_matches = 0; \
+		total_records = 0; \
+		for line in Path('data/test.jsonl').open(): \
+			item = json.loads(line); \
+			total_records += 1; \
+			preprocessor = {k: v for k, v in item['messy'].items() if k != 'status'}; \
+			if item['clean'].get('status') == preprocessor.get('status', 'active'): \
+				baseline_matches += 1; \
+		accuracy = baseline_matches / total_records if total_records > 0 else 0; \
+		print(f'Baseline accuracy (pre-processing rules): {accuracy:.2%}') \
+	"
 
 fuse: ## Merge LoRA adapter into base model
 	@echo "TODO: merge LoRA checkpoint into base model (see train.ipynb)."
@@ -43,3 +57,8 @@ serve: ## Spin up llama.cpp OpenAI-compatible HTTP server (llama-cpp-python)
 
 demo: ## Run one clean record through the GGUF model
 	uv run inference_demo.py --gguf $(GGUF_MODEL)
+
+clean: ## Remove generated data and models
+	rm -rf data/*.jsonl output/ checkpoints/
+
+.PHONY: help install local data train eval fuse gguf serve demo clean
